@@ -51,15 +51,6 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         </a>
                         @endif
 
-                        @if (session('role') === 'admin') 
-                        <a href="#" onclick="alert('Hanya ULP yang dapat menambah data transaksi. Silakan hubungi ULP terkait.'); return false;"
-                            class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Tambah
-                        </a>
-                        @else
                         <a href="{{ route('transaksis.create') }}"
                             class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,7 +58,6 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                             </svg>
                             Tambah
                         </a>
-                        @endif
                     </div>
                 </div>
             </div>

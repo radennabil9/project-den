@@ -74,24 +74,4 @@ public function update(Request $request, $id)
         return redirect()->route('tims.index')->with('success', 'Data Tim berhasil dihapus!');
     }
 
-    public function pilihTim()
-    {
-        $ulpId = session('ulp_id'); // Ambil ID ULP yang login
-        $tims = Tim::where('user_ulp_id', $ulpId)->get(); // Ambil tim sesuai ULP
-
-        return view('pilih_tim', compact('tims'));
-    }
-
-    public function setTim(Request $request)
-    {
-        $request->validate([
-            'tim_id' => 'required|exists:tims,id'
-        ]);
-
-        $tim = Tim::find($request->tim_id);
-
-        session(['tim_id' => $tim->id, 'nama_tim' => $tim->nama_tim]);
-
-        return redirect('/transaksis')->with('success', 'Tim berhasil dipilih: ' . $tim->nama_tim);
-    }
 }

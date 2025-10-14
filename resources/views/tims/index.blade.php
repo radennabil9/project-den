@@ -1,5 +1,6 @@
 <?php
-if (!session('role') || session('role') !== 'ulp') {
+
+if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp')) {
     header('Location: ' . route('login'));
     exit();
 }
@@ -33,21 +34,37 @@ if (!session('role') || session('role') !== 'ulp') {
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <a href="{{ route('dashboard.ulp') }}"
+                        <a href=" @if (session('role') === 'admin')
+                        {{ route('dashboard.admin') }}
+                        @else
+                        
+                        {{ route('dashboard.ulp') }}
+                        @endif"
                            class="inline-flex items-center gap-2 bg-white/20 text-emerald-700 hover:text-emerald-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
                             Kembali
                         </a>
-
-                        <a href="{{ route('tims.create') }}" 
-                           class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Tambah Tim
-                        </a>
+                        
+                    @if (session('role') !== 'admin')
+                     <!-- <a href="{{'#'}}"
+                     onclick="alert('Tidak Bisa Menambah Data')" 
+                     class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Tambah Tim
+                    </a> -->
+                    @else
+                     <a href="{{ route('tims.create') }}" 
+                     class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Tambah Tim
+                    </a>
+                    @endif   
                     </div>
                 </div>
             </div>
@@ -122,14 +139,14 @@ if (!session('role') || session('role') !== 'ulp') {
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('tims.edit', $tim->id) }}" 
-                                       class="inline-flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200 text-sm font-medium shadow-sm hover:shadow-md transform hover:scale-105">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('tims.destroy', $tim->id) }}" method="POST" class="inline">
+                                <a href="{{ route('tims.edit', $tim->id) }}" 
+                                class="inline-flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200 text-sm font-medium shadow-sm hover:shadow-md transform hover:scale-105">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Edit
+                            </a>
+                                    <!-- <form action="{{ route('tims.destroy', $tim->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" 
@@ -140,7 +157,7 @@ if (!session('role') || session('role') !== 'ulp') {
                                             </svg>
                                             Hapus
                                         </button>
-                                    </form>
+                                    </form> -->
                                 </div>
                             </td>
                         </tr>

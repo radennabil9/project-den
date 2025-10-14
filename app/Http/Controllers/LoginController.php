@@ -47,7 +47,6 @@ class LoginController extends Controller
             return redirect()->route('dashboard.ulp'); // route baru nanti
         }
 
-        // ❌ Gagal login
         return back()->with('error', 'Username atau password salah.');
     }
 

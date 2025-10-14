@@ -1,5 +1,5 @@
 <?php
-if (!session('role') ||  session('role') !== 'ulp') {
+if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp')) {
     header('Location: ' . route('login'));
     exit();
 }
