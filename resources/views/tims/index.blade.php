@@ -46,25 +46,13 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                             </svg>
                             Kembali
                         </a>
-                        
-                    @if (session('role') !== 'admin')
-                     <!-- <a href="{{'#'}}"
-                     onclick="alert('Tidak Bisa Menambah Data')" 
-                     class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
-                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        Tambah Tim
-                    </a> -->
-                    @else
                      <a href="{{ route('tims.create') }}" 
                      class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Tambah Tim
-                    </a>
-                    @endif   
+                        Buat Tim 
+                    </a>   
                     </div>
                 </div>
             </div>
