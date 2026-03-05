@@ -17,7 +17,8 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 </head>
 
 <body class="bg-gradient-to-br from-emerald-50 via-white to-blue-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    @include('dashboard.partials.sidebar-feature')
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:ml-64">
         <!-- Header -->
         <div class="mb-8">
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-600">
