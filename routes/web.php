@@ -18,8 +18,8 @@ Route::resource('userulps', UserULPController::class);
 Route::resource('admins', AdminController::class);
 Route::resource('tims', TimController::class);
 Route::get('/transaksis/filter', [TransaksiController::class, 'filter'])->name('transaksis.filter');
+Route::get('/transaksis/export-excel', [TransaksiController::class, 'exportExcel'])->name('transaksis.export');
 Route::resource('transaksis', TransaksiController::class);
-Route::get('/transaksis/filter', [TransaksiController::class, 'filter'])->name('transaksis.filter');
 
 
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transaksi;
+use App\Models\Tim;
 
 class DashboardController extends Controller
 {
@@ -11,18 +11,24 @@ class DashboardController extends Controller
     {
         $role = session('role');
 
-        // Ambil semua data transaksi dari database
-        $transaksis = Transaksi::all();
-
-        // Render tampilan dashboard sesuai role
         if ($role === 'admin') {
-            return view('dashboard.admin', compact('transaksis'));
-        } elseif ($role === 'ulp') {
-            return view('dashboard.ulp', compact('transaksis'));
+            $tims = Tim::all();
+            $transaksis = Transaksi::with('tim')->latest('tanggal')->get();
 
-        // Jika role tidak dikenal
+            return view('dashboard.admin', compact('transaksis', 'tims'));
+        }
+
+        if ($role === 'ulp') {
+            $tims = Tim::where('user_ulp_id', session('ulp_id'))->get();
+            $timIds = $tims->pluck('id');
+            $transaksis = Transaksi::with('tim')
+                ->whereIn('tim_id', $timIds)
+                ->latest('tanggal')
+                ->get();
+
+            return view('dashboard.ulp', compact('transaksis', 'tims'));
+        }
+
         return redirect('/login')->with('error', 'Role tidak dikenali.');
     }
 }
-    }
-

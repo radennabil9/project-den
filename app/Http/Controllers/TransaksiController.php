@@ -9,56 +9,59 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        if (session('role') === 'admin') {
-            // Admin hanya bisa lihat semua transaksi
-            $transaksis = Transaksi::with('tim')->get();
-        } else {
-            $tims = Tim::where('user_ulp_id', session('ulp_id'))->pluck('id');
+        $query = $this->baseQueryByRole();
 
-            // Ambil semua transaksi dari tim-tim tersebut
-            $transaksis = Transaksi::with('tim')
-                ->whereIn('tim_id', $tims)
-                ->get();
-        }
+        $tanggalDari = $request->query('tanggal_dari');
+        $tanggalSampai = $request->query('tanggal_sampai');
+        $this->applyDateRangeFilter($query, $tanggalDari, $tanggalSampai);
 
-        return view('transaksis.index', compact('transaksis'));
+        $transaksis = $query->orderByDesc('tanggal')->get();
+
+        return view('transaksis.index', compact('transaksis', 'tanggalDari', 'tanggalSampai'));
     }
 
     public function filter(Request $request)
-{
-    $query = Transaksi::with('tim');
-
-    // Filter tanggal
-    if ($request->filled('tanggal')) {
-        $query->whereDate('tanggal', $request->tanggal);
+    {
+        return redirect()->route('transaksis.index', [
+            'tanggal_dari' => $request->query('tanggal_dari'),
+            'tanggal_sampai' => $request->query('tanggal_sampai'),
+        ]);
     }
 
-    // Filter bulan
-    if ($request->filled('bulan')) {
-        $query->whereMonth('tanggal', $request->bulan);
-    }
+    public function exportExcel(Request $request)
+    {
+        if (session('role') !== 'admin') {
+            abort(403);
+        }
 
-    // Filter tahun
-    if ($request->filled('tahun')) {
-        $query->whereYear('tanggal', $request->tahun);
-    }
+        $query = Transaksi::with('tim');
+        $tanggalDari = $request->query('tanggal_dari');
+        $tanggalSampai = $request->query('tanggal_sampai');
+        $this->applyDateRangeFilter($query, $tanggalDari, $tanggalSampai);
+        $transaksis = $query->orderByDesc('tanggal')->get();
 
-    // Kalau user bukan admin
-    if (session('role') !== 'admin') {
-        $tims = Tim::where('user_ulp_id', session('ulp_id'))->pluck('id');
-        $query->whereIn('tim_id', $tims);
-    }
+        $filename = 'laporan_transaksi_' . now()->format('Ymd_His') . '.xls';
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Cache-Control' => 'max-age=0',
+        ];
 
-    $transaksis = $query->get();
-
-    if (session('role') === 'ulp') {
-        return view('dashboard.ulp', compact('transaksis'));
+        return response()->streamDownload(function () use ($transaksis) {
+            echo "ID\tTanggal\tTim\tRealisasi KWH\n";
+            foreach ($transaksis as $transaksi) {
+                $row = [
+                    $transaksi->id,
+                    Carbon::parse($transaksi->tanggal)->format('d-m-Y'),
+                    $transaksi->tim->nama_regu ?? '-',
+                    number_format((float) $transaksi->realisasi_kwh, 2, '.', ''),
+                ];
+                echo implode("\t", $row) . "\n";
+            }
+        }, $filename, $headers);
     }
-    
-    return view('dashboard.admin', compact('transaksis'));
-}
 
 
     public function create()
@@ -123,5 +126,28 @@ class TransaksiController extends Controller
         $transaksi->delete();
 
         return redirect()->route('transaksis.index')->with('success', 'Transaksi berhasil dihapus!');
+    }
+
+    private function baseQueryByRole()
+    {
+        $query = Transaksi::with('tim');
+
+        if (session('role') !== 'admin') {
+            $timIds = Tim::where('user_ulp_id', session('ulp_id'))->pluck('id');
+            $query->whereIn('tim_id', $timIds);
+        }
+
+        return $query;
+    }
+
+    private function applyDateRangeFilter($query, $tanggalDari, $tanggalSampai): void
+    {
+        if (!empty($tanggalDari)) {
+            $query->whereDate('tanggal', '>=', $tanggalDari);
+        }
+
+        if (!empty($tanggalSampai)) {
+            $query->whereDate('tanggal', '<=', $tanggalSampai);
+        }
     }
 }

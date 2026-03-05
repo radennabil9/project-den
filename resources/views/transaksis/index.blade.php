@@ -33,7 +33,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap justify-center sm:justify-end gap-2">
+	                    <div class="flex flex-wrap justify-center sm:justify-end gap-2">
                         @if (session('role') === 'admin')
                         <a href="{{ route('dashboard.admin') }}"
                             class="inline-flex items-center gap-2 bg-white/20 text-purple-600 hover:text-purple-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
@@ -52,20 +52,54 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         </a>
                         @endif
 
-                        <a href="{{ route('transaksis.create') }}"
-                            class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
+	                        <a href="{{ route('transaksis.create') }}"
+	                            class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            Tambah
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+	                            Tambah
+	                        </a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+	        <!-- Filter Rentang Tanggal -->
+	        <div class="mb-8 bg-white rounded-xl shadow-md p-5 border border-gray-200">
+	            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+	                <form method="GET" action="{{ route('transaksis.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+	                    <div>
+	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Dari</label>
+	                        <input type="date" name="tanggal_dari" value="{{ $tanggalDari ?? request('tanggal_dari') }}"
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+	                    </div>
+	                    <div>
+	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Sampai</label>
+	                        <input type="date" name="tanggal_sampai" value="{{ $tanggalSampai ?? request('tanggal_sampai') }}"
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+	                    </div>
+	                    <button type="submit"
+	                        class="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm">
+	                        Filter
+	                    </button>
+	                    <a href="{{ route('transaksis.index') }}"
+	                        class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold border border-gray-300">
+	                        Reset
+	                    </a>
+	                </form>
+
+	                @if (session('role') === 'admin')
+	                <a href="{{ route('transaksis.export', ['tanggal_dari' => $tanggalDari ?? request('tanggal_dari'), 'tanggal_sampai' => $tanggalSampai ?? request('tanggal_sampai')]) }}"
+	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm whitespace-nowrap">
+	                    Export Excel
+	                </a>
+	                @endif
+	            </div>
+	            <p class="text-xs text-gray-500 mt-3">Contoh: tanggal 1 Desember 2025 sampai tanggal 30 Januari 2026.</p>
+	        </div>
+
+	        <!-- Stats Cards -->
+	        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
             <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-purple-500">
                 <p class="text-gray-600 text-sm font-medium">Total Transaksi</p>
                 <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">{{ count($transaksis) }}</p>
