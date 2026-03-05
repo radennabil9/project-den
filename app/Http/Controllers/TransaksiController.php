@@ -26,6 +26,41 @@ class TransaksiController extends Controller
         return view('transaksis.index', compact('transaksis'));
     }
 
+    public function filter(Request $request)
+{
+    $query = Transaksi::with('tim');
+
+    // Filter tanggal
+    if ($request->filled('tanggal')) {
+        $query->whereDate('tanggal', $request->tanggal);
+    }
+
+    // Filter bulan
+    if ($request->filled('bulan')) {
+        $query->whereMonth('tanggal', $request->bulan);
+    }
+
+    // Filter tahun
+    if ($request->filled('tahun')) {
+        $query->whereYear('tanggal', $request->tahun);
+    }
+
+    // Kalau user bukan admin
+    if (session('role') !== 'admin') {
+        $tims = Tim::where('user_ulp_id', session('ulp_id'))->pluck('id');
+        $query->whereIn('tim_id', $tims);
+    }
+
+    $transaksis = $query->get();
+
+    if (session('role') === 'ulp') {
+        return view('dashboard.ulp', compact('transaksis'));
+    }
+    
+    return view('dashboard.admin', compact('transaksis'));
+}
+
+
     public function create()
     {
 

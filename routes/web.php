@@ -17,7 +17,11 @@ Route::get('/', function () {
 Route::resource('userulps', UserULPController::class);
 Route::resource('admins', AdminController::class);
 Route::resource('tims', TimController::class);
+Route::get('/transaksis/filter', [TransaksiController::class, 'filter'])->name('transaksis.filter');
 Route::resource('transaksis', TransaksiController::class);
+Route::get('/transaksis/filter', [TransaksiController::class, 'filter'])->name('transaksis.filter');
+
+
 
 Route::middleware(['web'])->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -25,18 +29,18 @@ Route::middleware(['web'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::get('/dashboard/admin', function () {
-    return view('dashboard.admin');
-})->name('dashboard.admin');
 
-Route::get('/dashboard/ulp', function () {
-    return view('dashboard.ulp'); // Pastikan file blade ini ada
-})->name('dashboard.ulp');
+// Ganti semua ini:
+Route::get('/dashboard/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
+Route::get('/dashboard/ulp', [DashboardController::class, 'index'])->name('dashboard.ulp');
+
 
 Route::middleware(['checkLogin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/transaksis', TransaksiController::class);
 });
+
+
 
 
 // Route::get('/userulp/dashboard', function(){ return view('userulp.dashboard'); })->name('userulp.dashboard');

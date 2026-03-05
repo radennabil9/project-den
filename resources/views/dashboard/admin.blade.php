@@ -1,15 +1,23 @@
+<?php
+if (!session('role') || session('role') !== 'admin') {
+    header('Location: ' . route('login'));
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <link rel="icon" href="{{ asset('assets/pln_icon.png') }}" type="image/x-icon" width="16" height="16">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - PLN</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
-    
-        html, body {
+        html,
+        body {
             overflow-x: hidden;
         }
 
@@ -19,28 +27,39 @@
         }
 
         @media (max-width: 640px) {
-            h1, h2, h3, h4 {
+
+            h1,
+            h2,
+            h3,
+            h4 {
                 font-size: 1rem !important;
             }
+
             .p-8 {
                 padding: 1rem !important;
             }
+
             .lg\\:p-8 {
                 padding: 1rem !important;
             }
+
             .lg\\:text-xl {
                 font-size: 1rem !important;
             }
+
             .lg\\:text-2xl {
                 font-size: 1.25rem !important;
             }
+
             .lg\\:text-3xl {
                 font-size: 1.5rem !important;
             }
+
             .lg\\:px-8 {
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
             }
+
             .lg\\:py-4 {
                 padding-top: 0.75rem !important;
                 padding-bottom: 0.75rem !important;
@@ -48,69 +67,59 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100">
+
+<body class="bg-gray-50">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-emerald-700 to-emerald-900 text-white shadow-2xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-red-800 to-red-950 text-white shadow-xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
             <!-- Close Button (Mobile Only) -->
-            <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-white hover:text-emerald-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+            <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-white hover:text-red-200">
+                <i class="bi bi-x-lg text-xl"></i>
             </button>
 
             <!-- Logo Section -->
-            <div class="p-4 lg:p-6 border-b border-emerald-600 flex items-center justify-between">
+            <div class="p-4 lg:p-6 border-b border-red-700 flex items-center justify-between">
                 <div class="flex items-center gap-2 lg:gap-3">
                     <img src="{{ asset('assets/pln.jpg') }}" alt="Logo PLN" class="w-10 h-10 lg:w-12 lg:h-12 object-contain bg-white rounded-lg p-1">
                     <div>
                         <h2 class="text-lg lg:text-xl font-bold">UP3 BOGOR</h2>
-                        <p class="text-emerald-200 text-xs">Admin Panel</p>
+                        <p class="text-red-300 text-xs">Admin Panel</p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation Menu -->
             <nav class="p-3 lg:p-4 space-y-2">
-                <a href="/dashboard" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 transition duration-200">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
+                <a href="/dashboard" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg bg-red-700 hover:bg-red-600 transition duration-200">
+                    <i class="bi bi-speedometer2 text-lg"></i>
                     <span class="font-medium text-sm lg:text-base">Dashboard</span>
                 </a>
 
-                <a href="/userulps" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-emerald-800 transition duration-200">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                <a href="/userulps" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-red-700 transition duration-200">
+                    <i class="bi bi-person-badge text-lg"></i>
                     <span class="font-medium text-sm lg:text-base">User ULP</span>
                 </a>
 
-                <a href="/tims" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-800 transition duration-200 group">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                <a href="/tims" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-700 transition duration-200 group">
+                    <i class="bi bi-people-fill text-lg"></i>
                     <span class="font-medium">Tim</span>
                 </a>
 
-                <a href="/transaksis" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-emerald-800 transition duration-200">
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
+                <a href="/transaksis" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-red-700 transition duration-200">
+                    <i class="bi bi-clipboard-data text-lg"></i>
                     <span class="font-medium text-sm lg:text-base">Transaksi</span>
                 </a>
             </nav>
 
             <!-- User Info -->
-            <div class="absolute bottom-0 left-0 right-0 p-3 lg:p-4 border-t border-emerald-600 bg-emerald-800">
+            <div class="absolute bottom-0 left-0 right-0 p-3 lg:p-4 border-t border-red-700 bg-red-900">
                 <div class="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg">
-                    <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-base lg:text-lg flex-shrink-0">
+                    <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-red-600 flex items-center justify-center font-bold text-base lg:text-lg flex-shrink-0">
                         {{ strtoupper(substr(session('username'), 0, 1)) }}
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="font-semibold text-xs lg:text-sm truncate">{{ session('username') }}</p>
-                        <p class="text-emerald-200 text-xs uppercase">{{ session('role') }}</p>
+                        <p class="text-red-300 text-xs uppercase">{{ session('role') }}</p>
                     </div>
                 </div>
             </div>
@@ -121,84 +130,224 @@
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto w-full">
-            <header class="bg-white shadow-md sticky top-0 z-10">
+            <header class="bg-white shadow-sm sticky top-0 z-10 border-b border-gray-200">
                 <div class="flex items-center justify-between px-4 lg:px-8 py-3 lg:py-4">
                     <div class="flex items-center gap-3">
                         <button id="menuToggle" class="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
+                            <i class="bi bi-list text-2xl"></i>
                         </button>
                         <div>
-                            <h1 class="text-lg sm:text-xl font-bold text-gray-800">Admin</h1>
-                            <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">Selamat datang, <span class="font-semibold text-emerald-700">{{ session('username') }}</span></p>
+                            <h1 class="text-lg sm:text-xl font-bold text-gray-800">Admin Dashboard</h1>
+                            <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">Selamat datang, <span class="font-semibold text-red-700">{{ session('username') }}</span></p>
                         </div>
                     </div>
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 py-2 rounded-lg transition duration-200 text-sm lg:text-base">
-                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            <span class="hidden sm:inline">Logout</span>
-                        </button>
-                    </form>
+                    <!-- Tombol logout -->
+                    <button type="button" onclick="openLogoutModal()"
+                        class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition duration-200 text-sm lg:text-base shadow-sm">
+                        <i class="bi bi-box-arrow-right text-lg"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </button>
+
+                    <!-- Modal Konfirmasi Logout -->
+                    <div id="logoutModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm items-center justify-center z-[9999]">
+                        <div class="modal-content bg-white rounded-xl shadow-lg w-80 p-6 text-center transform transition-all duration-200 scale-95 opacity-0">
+                            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                                <i class="bi bi-exclamation-triangle text-red-600 text-2xl"></i>
+                            </div>
+                            <h2 class="text-lg font-semibold text-gray-800 mb-2">Konfirmasi Logout</h2>
+                            <p class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin keluar dari akun ini?</p>
+
+                            <div class="flex justify-center gap-3">
+                                <button type="button" onclick="closeLogoutModal()"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm transition font-medium">
+                                    Batal
+                                </button>
+
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm transition font-medium">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
             <div class="p-4 lg:p-8">
                 <!-- Welcome Card -->
-                <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl shadow-lg p-5 lg:p-8 mb-6 text-white">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="bg-gradient-to-r from-red-700 to-red-900 rounded-xl shadow-lg p-5 lg:p-8 mb-6 text-white border border-red-600">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                         <div>
-                            <h2 class="text-xl sm:text-2xl font-bold">Selamat Datang! 👋</h2>
-                            <p class="text-sm sm:text-base">Halo <span class="font-bold">{{ session('username') }}</span>! Kamu login sebagai <span class="font-bold uppercase bg-emerald-800 px-2 py-1 rounded-full text-xs sm:text-sm">{{ session('role') }}</span></p>
+                            <h2 class="text-xl sm:text-2xl font-bold mb-2">Selamat Datang</h2>
+                            <p class="text-sm sm:text-base text-red-100 mb-1">
+                                <span class="font-bold">{{ session('username') }}</span>
+                            </p>
+                            <p class="text-red-200 text-sm">
+                                <i class="bi bi-shield-fill-check"></i> Role: 
+                                <span class="font-semibold uppercase bg-red-800 px-2 py-1 rounded-full text-xs sm:text-sm">{{ session('role') }}</span>
+                            </p>
+                            <p class="text-red-300 text-sm mt-3">
+                                <i class="bi bi-building"></i> Panel administrasi sistem PLN UP3 Bogor
+                            </p>
                         </div>
-                        <svg class="hidden sm:block w-20 h-20 text-emerald-500 opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-                        </svg>
+                        <div class="hidden sm:block">
+                            <i class="bi bi-shield-fill-exclamation text-6xl text-red-300 opacity-50"></i>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Quick Menu -->
-                <div class="bg-white rounded-xl shadow-md p-4 lg:p-6">
+                <div class="bg-white rounded-xl shadow-md p-4 lg:p-6 mb-6 border border-gray-200">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="bg-emerald-100 p-2 rounded-lg">
-                            <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
+                        <div class="bg-red-100 p-2 rounded-lg">
+                            <i class="bi bi-lightning-charge-fill text-red-700 text-2xl"></i>
                         </div>
                         <h3 class="text-lg font-bold text-gray-800">Menu Cepat</h3>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <a href="/userulps" class="group bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg p-4 transition duration-200 border border-blue-200 hover:shadow-md">
+                        <a href="/userulps" class="group bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg p-4 transition duration-200 border border-blue-200 hover:shadow-lg">
                             <div class="flex items-center gap-3">
-                                <div class="bg-blue-500 p-3 rounded-lg group-hover:scale-110 transition duration-200">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
+                                <div class="bg-blue-600 p-3 rounded-lg group-hover:scale-110 transition duration-200">
+                                    <i class="bi bi-person-badge text-white text-2xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base">Kelola User ULP</h4>
+                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base group-hover:text-blue-700">Kelola User ULP</h4>
                                     <p class="text-xs text-gray-600">Manajemen User ULP</p>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="/transaksis" class="group bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg p-4 transition duration-200 border border-purple-200 hover:shadow-md">
+                        <a href="/transaksis" class="group bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg p-4 transition duration-200 border border-purple-200 hover:shadow-lg">
                             <div class="flex items-center gap-3">
-                                <div class="bg-purple-500 p-3 rounded-lg group-hover:scale-110 transition duration-200">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                    </svg>
+                                <div class="bg-purple-600 p-3 rounded-lg group-hover:scale-110 transition duration-200">
+                                    <i class="bi bi-clipboard-data text-white text-2xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base">Lihat Transaksi</h4>
+                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base group-hover:text-purple-700">Lihat Transaksi</h4>
                                     <p class="text-xs text-gray-600">Data Realisasi KWH</p>
                                 </div>
                             </div>
                         </a>
+                    </div>
+                </div>
+
+                <!-- Filter Laporan -->
+                <div class="bg-white rounded-xl shadow-md p-4 lg:p-6 mb-6 border border-gray-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="bi bi-funnel-fill text-red-700 text-xl"></i>
+                        <h3 class="text-lg font-bold text-gray-800">Filter Laporan Transaksi</h3>
+                    </div>
+                    <form method="GET" action="{{ route('transaksis.filter') }}" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="bi bi-calendar-date"></i> Tanggal
+                            </label>
+                            <input type="date" name="tanggal" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="bi bi-calendar-month"></i> Bulan
+                            </label>
+                            <select name="bulan" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
+                                <option value="">-- Pilih Bulan --</option>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{ $i }}">{{ DateTime::createFromFormat('!m', $i)->format('F') }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="bi bi-calendar-check"></i> Tahun
+                            </label>
+                            <select name="tahun" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition">
+                                <option value="">-- Pilih Tahun --</option>
+                                @for ($year = date('Y'); $year >= 2020; $year--)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-3 flex justify-end gap-2">
+                            <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition font-medium shadow-sm">
+                                <i class="bi bi-search"></i> Filter
+                            </button>
+                            <a href="{{ route('dashboard.admin') }}" class="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg hover:bg-gray-300 transition font-medium">
+                                <i class="bi bi-arrow-clockwise"></i> Reset
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Table Card -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                    <div class="bg-gradient-to-r from-red-700 to-red-900 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-table text-white text-xl"></i>
+                            <h2 class="text-lg sm:text-xl font-semibold text-white">Data Transaksi Realisasi</h2>
+                        </div>
+                        <span class="bg-white/20 text-white text-xs sm:text-sm px-3 py-1.5 rounded-full font-medium">
+                            <i class="bi bi-list-ol"></i> {{ count($transaksis) }} Transaksi
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm">
+                            <thead class="bg-gray-100 border-b-2 border-red-600">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                                        <i class="bi bi-hash"></i> ID
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                                        <i class="bi bi-calendar-event"></i> Tanggal
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">
+                                        <i class="bi bi-people"></i> Tim
+                                    </th>
+                                    <th class="px-4 py-3 text-center font-semibold text-gray-700 uppercase tracking-wider">
+                                        <i class="bi bi-lightning-charge"></i> Realisasi
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                                @forelse($transaksis as $transaksi)
+                                <tr class="hover:bg-red-50 transition duration-150">
+                                    <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $transaksi->id }}</td>
+                                    <td class="px-4 py-3">
+                                        <p class="text-gray-900 font-semibold">
+                                            <i class="bi bi-calendar3 text-red-600"></i>
+                                            {{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y') }}
+                                        </p>
+                                        <p class="text-gray-500 text-xs">
+                                            <i class="bi bi-clock"></i>
+                                            {{ \Carbon\Carbon::parse($transaksi->tanggal)->diffForHumans() }}
+                                        </p>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-700 font-medium">{{ $transaksi->tim->nama_regu ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-center">
+                                        <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold text-sm">
+                                            <i class="bi bi-lightning-fill"></i>
+                                            {{ number_format($transaksi->realisasi_kwh, 0, ',', '.') }} KWH
+                                        </span>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="px-4 py-12 text-center text-gray-600">
+                                        <i class="bi bi-inbox text-4xl text-gray-400 mb-2"></i>
+                                        <p>Belum ada data transaksi.</p>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-center sm:text-left text-sm text-gray-600">
+                        <i class="bi bi-c-circle"></i> PT PLN (Persero) - Data Realisasi KWH
                     </div>
                 </div>
             </div>
@@ -236,5 +385,42 @@
             });
         });
     </script>
+
+    <script>
+        // ===== Modal Logout =====
+        const logoutModal = document.getElementById('logoutModal');
+        const modalContent = logoutModal.querySelector('.modal-content');
+
+        function openLogoutModal() {
+            logoutModal.classList.remove('hidden');
+            logoutModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeLogoutModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                logoutModal.classList.remove('flex');
+                logoutModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 150);
+        }
+
+        // Biar bisa klik di luar modal buat nutup juga
+        logoutModal.addEventListener('click', function(e) {
+            if (e.target === logoutModal) {
+                closeLogoutModal();
+            }
+        });
+    </script>
+
 </body>
+
 </html>
