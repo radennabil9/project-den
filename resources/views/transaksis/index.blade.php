@@ -16,12 +16,12 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 via-white to-blue-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 via-white to-sky-50 min-h-screen">
     @include('dashboard.partials.sidebar-feature')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:ml-64">
         <!-- Header -->
         <div class="mb-8">
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-600">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 flex-wrap">
                     <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
                         <img src="{{ asset('assets/pln.jpg') }}"
@@ -36,7 +36,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	                    <div class="flex flex-wrap justify-center sm:justify-end gap-2">
                         @if (session('role') === 'admin')
                         <a href="{{ route('dashboard.admin') }}"
-                            class="inline-flex items-center gap-2 bg-white/20 text-purple-600 hover:text-purple-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
+                            class="inline-flex items-center gap-2 bg-white/20 text-blue-600 hover:text-blue-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
@@ -44,7 +44,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         </a>
                         @else
                         <a href="{{ route('dashboard.ulp') }}"
-                            class="inline-flex items-center gap-2 bg-white/20 text-purple-600 hover:text-purple-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
+                            class="inline-flex items-center gap-2 bg-white/20 text-blue-600 hover:text-blue-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
@@ -53,7 +53,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         @endif
 
 	                        <a href="{{ route('transaksis.create') }}"
-	                            class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
+	                            class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 px-3 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
@@ -71,26 +71,26 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	                    <div>
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Dari</label>
 	                        <input type="date" name="tanggal_dari" value="{{ $tanggalDari ?? request('tanggal_dari') }}"
-	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 	                    </div>
 	                    <div>
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Sampai</label>
 	                        <input type="date" name="tanggal_sampai" value="{{ $tanggalSampai ?? request('tanggal_sampai') }}"
-	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 	                    </div>
 	                    <button type="submit"
-	                        class="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm">
+	                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm h-[42px]">
 	                        Filter
 	                    </button>
 	                    <a href="{{ route('transaksis.index') }}"
-	                        class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold border border-gray-300">
+	                        class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold border border-gray-300 h-[42px]">
 	                        Reset
 	                    </a>
 	                </form>
 
 	                @if (session('role') === 'admin')
 	                <a href="{{ route('transaksis.export', ['tanggal_dari' => $tanggalDari ?? request('tanggal_dari'), 'tanggal_sampai' => $tanggalSampai ?? request('tanggal_sampai')]) }}"
-	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm whitespace-nowrap">
+	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm whitespace-nowrap h-[42px]">
 	                    Export Excel
 	                </a>
 	                @endif
@@ -100,7 +100,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 
         <!-- Table Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <h2 class="text-lg sm:text-xl font-semibold text-white">Data Transaksi Realisasi</h2>
                 <span class="bg-white/20 text-white text-xs sm:text-sm px-3 py-1 rounded-full">
                     {{ count($transaksis) }} Transaksi
@@ -109,7 +109,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm">
-                    <thead class="bg-gray-50 border-b-2 border-purple-600">
+                    <thead class="bg-gray-50 border-b-2 border-blue-600">
                         <tr>
                             <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">ID</th>
                             <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">Tanggal</th>
@@ -120,7 +120,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @forelse($transaksis as $transaksi)
-                        <tr class="hover:bg-purple-50 transition duration-150">
+                        <tr class="hover:bg-blue-50 transition duration-150">
                             <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $transaksi->id }}</td>
                             <td class="px-4 py-3">
                                 <p class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y') }}</p>
@@ -155,14 +155,14 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
             </div>
 
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-center sm:text-left text-sm text-gray-600">
-                © PT PLN (Persero) - Data Realisasi KWH
+                © PT PLN (Persero) UP3 BOGOR - Data Realisasi KWH
             </div>
         </div>
 
         <!-- Info -->
-        <div class="mt-6 bg-purple-50 border-l-4 border-purple-500 rounded-lg p-4">
-            <p class="text-purple-800 font-medium text-sm mb-1">Informasi</p>
-            <p class="text-purple-600 text-xs">Data transaksi mencatat realisasi KWH tiap tim. Pastikan input akurat.</p>
+        <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+            <p class="text-blue-800 font-medium text-sm mb-1">Informasi</p>
+            <p class="text-blue-600 text-xs">Data transaksi mencatat realisasi KWH tiap tim. Pastikan input akurat.</p>
         </div>
     </div>
 </body>

@@ -16,12 +16,12 @@ if (!session('role') || session('role') !== 'admin') {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gradient-to-br from-emerald-50 via-white to-blue-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 via-white to-sky-50 min-h-screen">
     @include('dashboard.partials.sidebar-feature')
     <div class="container mx-auto px-4 py-8 lg:ml-64">
         <!-- Header -->
         <div class="mb-8">
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-emerald-600">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex items-center gap-4">
                         <!-- Logo PLN -->
@@ -36,7 +36,7 @@ if (!session('role') || session('role') !== 'admin') {
 
                     <div class="flex items-center gap-2 mb-4">
                         <a href="{{ route('dashboard.admin') }}"
-                            class="inline-flex items-center gap-2 bg-white/20 text-emerald-700 hover:text-emerald-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
+                            class="inline-flex items-center gap-2 bg-white/20 text-blue-700 hover:text-blue-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
@@ -44,7 +44,7 @@ if (!session('role') || session('role') !== 'admin') {
                         </a>
 
                         <a href="{{ route('userulps.create') }}"
-                            class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2 text-sm">
+                            class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2 text-sm">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
@@ -58,14 +58,14 @@ if (!session('role') || session('role') !== 'admin') {
 
         <!-- Success Message -->
         @if(session('success'))
-        <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 rounded-lg p-4 shadow-sm animate-pulse">
+        <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 shadow-sm animate-pulse">
             <div class="flex items-center gap-3">
                 <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <p class="text-emerald-800 font-medium">{{ session('success') }}</p>
+                <p class="text-blue-800 font-medium">{{ session('success') }}</p>
             </div>
         </div>
         @endif
@@ -74,7 +74,7 @@ if (!session('role') || session('role') !== 'admin') {
         <!-- Table Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Table Header -->
-            <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-semibold text-white">Data User ULP</h2>
                     <span class="bg-white/20 text-white text-sm px-3 py-1 rounded-full">
@@ -86,7 +86,7 @@ if (!session('role') || session('role') !== 'admin') {
             <!-- Table -->
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50 border-b-2 border-emerald-600">
+                    <thead class="bg-gray-50 border-b-2 border-blue-600">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama ULP</th>
@@ -96,15 +96,15 @@ if (!session('role') || session('role') !== 'admin') {
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @forelse($userUlps as $u)
-                        <tr class="hover:bg-emerald-50 transition duration-150">
+                        <tr class="hover:bg-blue-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 font-bold text-sm">
+                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
                                     {{ $u->id }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="bg-emerald-600 text-white p-2 rounded-lg">
+                                    <div class="bg-blue-600 text-white p-2 rounded-lg">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
@@ -176,7 +176,7 @@ if (!session('role') || session('role') !== 'admin') {
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
                 <div class="flex items-center justify-between text-sm text-gray-600">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                         </svg>
                         <span>Kelola akun User ULP untuk sistem manajemen PLN</span>

@@ -76,13 +76,23 @@
     </div>
 </aside>
 
+<style>
+    @media (min-width: 1024px) {
+        #sidebar + div {
+            margin-left: 16rem !important;
+            width: calc(100% - 16rem) !important;
+            max-width: none !important;
+        }
+    }
+</style>
+
 <button id="menuToggle" class="fixed top-4 left-4 z-40 lg:hidden bg-blue-700 text-white p-2 rounded-lg shadow">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
 </button>
 
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+<div id="overlay" class="fixed inset-0 bg-transparent z-40 lg:hidden hidden"></div>
 
 <script>
     (function() {
@@ -90,25 +100,39 @@
         const closeSidebar = document.getElementById('closeSidebar');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
+        const pageContent = sidebar ? sidebar.nextElementSibling : null;
         const profileToggle = document.getElementById('profileToggle');
         const profileMenu = document.getElementById('profileMenu');
         if (!menuToggle || !closeSidebar || !sidebar || !overlay) return;
 
+        if (pageContent) {
+            pageContent.style.transition = 'transform 0.3s ease-in-out';
+        }
+
         function openSidebar() {
             sidebar.classList.remove('-translate-x-full');
             overlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            if (window.innerWidth < 1024 && pageContent) {
+                pageContent.style.transform = 'translateX(16rem)';
+            }
         }
 
         function closeSidebarFunc() {
             sidebar.classList.add('-translate-x-full');
             overlay.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            if (pageContent) {
+                pageContent.style.transform = 'translateX(0)';
+            }
         }
 
         menuToggle.addEventListener('click', openSidebar);
         closeSidebar.addEventListener('click', closeSidebarFunc);
         overlay.addEventListener('click', closeSidebarFunc);
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && pageContent) {
+                pageContent.style.transform = 'translateX(0)';
+            }
+        });
 
         const sidebarLinks = sidebar.querySelectorAll('a');
         sidebarLinks.forEach((link) => {
