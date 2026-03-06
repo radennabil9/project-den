@@ -48,17 +48,51 @@
 
     <!-- User Info -->
     <div class="absolute bottom-0 left-0 right-0 p-3 lg:p-4 border-t border-blue-700 bg-blue-900">
-        <div class="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg">
+        <button type="button" id="profileToggleAdmin"
+            class="w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-blue-800 transition">
             <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-base lg:text-lg flex-shrink-0">
                 {{ strtoupper(substr(session('username'), 0, 1)) }}
             </div>
-            <div class="flex-1 min-w-0">
+            <div class="flex-1 min-w-0 text-left">
                 <p class="font-semibold text-xs lg:text-sm truncate">{{ session('username') }}</p>
                 <p class="text-blue-300 text-xs uppercase">{{ session('role') }}</p>
             </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-200" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div id="profileMenuAdmin" class="mt-2 hidden bg-blue-900 rounded-lg border border-blue-700 overflow-hidden">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 transition text-sm font-medium">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 3a1 1 0 0 0-1 1v4a1 1 0 1 0 2 0V5h7v14h-7v-3a1 1 0 1 0-2 0v4a1 1 0 0 0 1 1h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8Zm2.29 5.29a1 1 0 0 0 0 1.42L13.59 11H4a1 1 0 1 0 0 2h9.59l-1.3 1.29a1 1 0 1 0 1.42 1.42l3-3a1 1 0 0 0 0-1.42l-3-3a1 1 0 0 0-1.42 0Z" />
+                    </svg>
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </aside>
 
 <!-- Overlay for mobile -->
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+
+<script>
+    (function() {
+        const profileToggle = document.getElementById('profileToggleAdmin');
+        const profileMenu = document.getElementById('profileMenuAdmin');
+        if (!profileToggle || !profileMenu) return;
+
+        profileToggle.addEventListener('click', () => {
+            profileMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileToggle.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+            }
+        });
+    })();
+</script>

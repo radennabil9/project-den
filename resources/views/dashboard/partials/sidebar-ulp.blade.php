@@ -12,7 +12,9 @@
         </div>
         <!-- Tombol close sidebar di mobile -->
         <button @click="sidebarOpen = false" class="md:hidden text-white focus:outline-none">
-            <i class="bi bi-x-lg text-xl"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
         </button>
     </div>
 
@@ -40,16 +42,35 @@
         </a>
     </nav>
 
-    <!-- User Info Section -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-700">
-        <div class="flex items-center gap-3 px-4 py-3 bg-blue-900 rounded-lg">
+    <!-- User Profile + Logout -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-700" @click.away="profileOpen = false">
+        <button type="button" @click="profileOpen = !profileOpen"
+            class="w-full flex items-center gap-3 px-4 py-3 bg-blue-900 rounded-lg hover:bg-blue-800 transition">
             <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg">
                 {{ strtoupper(substr(session('username'), 0, 1)) }}
             </div>
-            <div class="flex-1">
+            <div class="flex-1 text-left">
                 <p class="font-semibold text-sm truncate">{{ session('username') }}</p>
                 <p class="text-blue-300 text-xs uppercase">{{ session('role') }}</p>
             </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-200 transition"
+                :class="profileOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+        <div x-show="profileOpen" x-transition
+            class="mt-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="w-full text-left px-4 py-3 text-sm font-medium hover:bg-red-600 transition flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 3a1 1 0 0 0-1 1v4a1 1 0 1 0 2 0V5h7v14h-7v-3a1 1 0 1 0-2 0v4a1 1 0 0 0 1 1h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8Zm2.29 5.29a1 1 0 0 0 0 1.42L13.59 11H4a1 1 0 1 0 0 2h9.59l-1.3 1.29a1 1 0 1 0 1.42 1.42l3-3a1 1 0 0 0 0-1.42l-3-3a1 1 0 0 0-1.42 0Z" />
+                    </svg>
+                    Logout
+                </button>
+            </form>
         </div>
     </div>
 </aside>
