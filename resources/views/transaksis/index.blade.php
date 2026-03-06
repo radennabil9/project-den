@@ -66,31 +66,31 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 
 	        <!-- Filter Rentang Tanggal -->
 	        <div class="mb-8 bg-white rounded-xl shadow-md p-5 border border-gray-200">
-	            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-	                <form method="GET" action="{{ route('transaksis.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+	            <div class="flex flex-col xl:flex-row xl:items-end gap-4">
+	                <form method="GET" action="{{ route('transaksis.index') }}" class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 items-end">
 	                    <div>
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Dari</label>
 	                        <input type="date" name="tanggal_dari" value="{{ $tanggalDari ?? request('tanggal_dari') }}"
-	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 	                    </div>
 	                    <div>
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Sampai</label>
 	                        <input type="date" name="tanggal_sampai" value="{{ $tanggalSampai ?? request('tanggal_sampai') }}"
-	                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 	                    </div>
 	                    <button type="submit"
-	                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm h-[42px]">
+	                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm h-[44px]">
 	                        Filter
 	                    </button>
 	                    <a href="{{ route('transaksis.index') }}"
-	                        class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg px-4 py-2 text-sm font-semibold border border-gray-300 h-[42px]">
+	                        class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg px-4 py-2.5 text-sm font-semibold border border-gray-300 h-[44px]">
 	                        Reset
 	                    </a>
 	                </form>
 
 	                @if (session('role') === 'admin')
 	                <a href="{{ route('transaksis.export', ['tanggal_dari' => $tanggalDari ?? request('tanggal_dari'), 'tanggal_sampai' => $tanggalSampai ?? request('tanggal_sampai')]) }}"
-	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2 text-sm font-semibold shadow-sm whitespace-nowrap h-[42px]">
+	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm whitespace-nowrap h-[44px]">
 	                    Export Excel
 	                </a>
 	                @endif

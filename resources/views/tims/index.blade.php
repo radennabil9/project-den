@@ -15,15 +15,15 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
     <title>Daftar Tim - PLN</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-emerald-50 via-white to-blue-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-50 via-white to-sky-50 min-h-screen">
     @include('dashboard.partials.sidebar-feature')
     <div class="container mx-auto px-4 py-8 lg:ml-64">
         <!-- Header -->
         <div class="mb-8">
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-emerald-600">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="bg-emerald-600 text-white p-3 rounded-lg">
+                        <div class="bg-blue-600 text-white p-3 rounded-lg">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
@@ -41,14 +41,14 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                         
                         {{ route('dashboard.ulp') }}
                         @endif"
-                           class="inline-flex items-center gap-2 bg-white/20 text-emerald-700 hover:text-emerald-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
+                           class="inline-flex items-center gap-2 bg-white/20 text-blue-700 hover:text-blue-800 px-3 py-2 rounded-lg transition duration-200 shadow-sm hover:shadow-md text-sm font-medium">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                             </svg>
                             Kembali
                         </a>
                      <a href="{{ route('tims.create') }}" 
-                     class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
+                     class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
@@ -61,14 +61,14 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 
         <!-- Success Message -->
         @if (session('success'))
-        <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 rounded-lg p-4 shadow-sm animate-pulse">
+        <div class="mb-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 shadow-sm animate-pulse">
             <div class="flex items-center gap-3">
                 <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <p class="text-emerald-800 font-medium">{{ session('success') }}</p>
+                <p class="text-blue-800 font-medium">{{ session('success') }}</p>
             </div>
         </div>
         @endif
@@ -76,7 +76,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
         <!-- Table Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Table Header -->
-            <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-semibold text-white">Data Tim Kerja</h2>
                     <span class="bg-white/20 text-white text-sm px-3 py-1 rounded-full">
@@ -88,7 +88,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
             <!-- Table -->
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50 border-b-2 border-emerald-600">
+                    <thead class="bg-gray-50 border-b-2 border-blue-600">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">No</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama Regu</th>
@@ -99,15 +99,15 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @forelse ($tims as $index => $tim)
-                        <tr class="hover:bg-emerald-50 transition duration-150">
+                        <tr class="hover:bg-blue-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-sm">
+                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
                                     {{ $index + 1 }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="bg-emerald-600 text-white p-2 rounded-lg">
+                                    <div class="bg-blue-600 text-white p-2 rounded-lg">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                                         </svg>
@@ -175,7 +175,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
                 <div class="flex items-center justify-between text-sm text-gray-600">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                         </svg>
                         <span>Data tim kerja PLN</span>
