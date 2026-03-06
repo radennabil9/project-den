@@ -38,6 +38,69 @@
     });
     $maxMonthly = max($monthRows->max('value') ?? 0, 1);
     $latestTransaksis = $transaksis->sortByDesc('tanggal')->take(8);
+
+    $kwhPerTim = $transaksis
+        ->groupBy('tim_id')
+        ->map(function ($rows, $timId) use ($timsById) {
+            return [
+                'tim_id' => $timId,
+                'nama' => optional($timsById->get($timId))->nama_regu ?? 'Tim Tidak Dikenal',
+                'kwh' => (float) $rows->sum('realisasi_kwh'),
+            ];
+        })
+        ->sortByDesc('kwh')
+        ->values();
+
+    $warnaChart = ['#5470C6', '#91CC75', '#FAC858', '#EE6666', '#73C0DE', '#3BA272', '#FC8452', '#9A60B4'];
+
+    $pieTop = $kwhPerTim->take(5);
+    $pieLabels = $pieTop->pluck('nama')->values()->all();
+    $pieValues = $pieTop->pluck('kwh')->map(fn($v) => round($v, 2))->values()->all();
+    $sisaKwh = (float) $kwhPerTim->skip(5)->sum('kwh');
+    if ($sisaKwh > 0) {
+        $pieLabels[] = 'Lainnya';
+        $pieValues[] = round($sisaKwh, 2);
+    }
+    if (empty($pieLabels)) {
+        $pieLabels = ['Belum Ada Data'];
+        $pieValues = [1];
+    }
+
+    $dayLabelMap = [
+        'Mon' => 'Sen',
+        'Tue' => 'Sel',
+        'Wed' => 'Rab',
+        'Thu' => 'Kam',
+        'Fri' => 'Jum',
+        'Sat' => 'Sab',
+        'Sun' => 'Min',
+    ];
+    $daySource = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    $dayLabels = collect($daySource)->map(fn($d) => $dayLabelMap[$d])->values()->all();
+
+    $stackTimRows = $kwhPerTim->take(5);
+    $stackDatasets = [];
+    foreach ($stackTimRows as $idx => $timRow) {
+        $values = [];
+        foreach ($daySource as $d) {
+            $values[] = (float) $transaksis
+                ->filter(fn($trx) => (string) $trx->tim_id === (string) $timRow['tim_id'])
+                ->filter(fn($trx) => \Carbon\Carbon::parse($trx->tanggal)->format('D') === $d)
+                ->sum('realisasi_kwh');
+        }
+        $stackDatasets[] = [
+            'label' => $timRow['nama'],
+            'data' => $values,
+            'backgroundColor' => $warnaChart[$idx % count($warnaChart)],
+        ];
+    }
+    if (empty($stackDatasets)) {
+        $stackDatasets[] = [
+            'label' => 'Belum Ada Data',
+            'data' => [0, 0, 0, 0, 0, 0, 0],
+            'backgroundColor' => '#cbd5e1',
+        ];
+    }
 @endphp
 
 <div class="p-4 lg:p-8 space-y-6">
@@ -48,8 +111,8 @@
                 <h2 class="text-2xl lg:text-3xl font-bold mt-1">{{ $dashboardTitle }}</h2>
                 <p class="text-blue-100 mt-2">Ringkasan performa transaksi dan tim kerja secara real-time.</p>
                 <div class="mt-4 flex flex-wrap items-center gap-3 text-xs">
-                    <span class="bg-white/15 px-3 py-1 rounded-full">User: {{ session('username') }}</span>
-                    <span class="bg-white/15 px-3 py-1 rounded-full">Role: {{ strtoupper(session('role')) }}</span>
+                    <span class="bg-white/15 px-3 py-1 rounded-full">Pengguna: {{ session('username') }}</span>
+                    <span class="bg-white/15 px-3 py-1 rounded-full">Peran: {{ strtoupper(session('role')) }}</span>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 min-w-[220px]">
@@ -87,26 +150,6 @@
     </section>
 
     <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <article class="xl:col-span-2 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-gray-800">Diagram Realisasi 6 Bulan Terakhir</h3>
-                <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">KWH</span>
-            </div>
-            <div class="space-y-4">
-                @foreach($monthRows as $row)
-                    <div>
-                        <div class="flex items-center justify-between text-sm mb-1">
-                            <span class="text-gray-600">{{ $row['label'] }}</span>
-                            <span class="font-semibold text-gray-800">{{ number_format($row['value'], 0, ',', '.') }}</span>
-                        </div>
-                        <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style="width: {{ ($row['value'] / $maxMonthly) * 100 }}%"></div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </article>
-
         <article class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
             <h3 class="text-lg font-bold text-gray-800 mb-4">Status Kelola Tim</h3>
             <div class="space-y-4">
@@ -129,6 +172,42 @@
                         {{ $totalTim > 0 ? number_format($totalKwh / $totalTim, 1, ',', '.') : '0,0' }} KWH
                     </p>
                 </div>
+            </div>
+        </article>
+
+        <article class="xl:col-span-2 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Diagram Realisasi 6 Bulan Terakhir</h3>
+                <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">KWH</span>
+            </div>
+            <div class="space-y-4">
+                @foreach($monthRows as $row)
+                    <div>
+                        <div class="flex items-center justify-between text-sm mb-1">
+                            <span class="text-gray-600">{{ $row['label'] }}</span>
+                            <span class="font-semibold text-gray-800">{{ number_format($row['value'], 0, ',', '.') }}</span>
+                        </div>
+                        <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style="width: {{ ($row['value'] / $maxMonthly) * 100 }}%"></div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </article>
+    </section>
+
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <article class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Komposisi KWH per Tim</h3>
+            <div class="h-[300px]">
+                <canvas id="trafficPieChart"></canvas>
+            </div>
+        </article>
+
+        <article class="xl:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Diagram KWH per Hari Berdasarkan Tim</h3>
+            <div class="h-[420px]">
+                <canvas id="trafficStackedChart"></canvas>
             </div>
         </article>
     </section>
@@ -193,3 +272,62 @@
         <p class="text-sm text-gray-600">Filter data dipindahkan ke halaman Transaksi dengan mode rentang tanggal agar analisis laporan lebih fleksibel.</p>
     </section>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function() {
+        const pieCanvas = document.getElementById('trafficPieChart');
+        const stackedCanvas = document.getElementById('trafficStackedChart');
+        if (!pieCanvas || !stackedCanvas || typeof Chart === 'undefined') return;
+
+        const pieLabels = @json($pieLabels);
+        const pieValues = @json($pieValues);
+        const dayLabels = @json($dayLabels);
+        const stackDatasets = @json($stackDatasets);
+
+        new Chart(pieCanvas, {
+            type: 'pie',
+            data: {
+                labels: pieLabels,
+                datasets: [{
+                    data: pieValues,
+                    backgroundColor: ['#5470C6', '#91CC75', '#FAC858', '#EE6666', '#73C0DE', '#3BA272', '#FC8452'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(stackedCanvas, {
+            type: 'bar',
+            data: {
+                labels: dayLabels,
+                datasets: stackDatasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { stacked: true, grid: { color: '#e5e7eb' } },
+                    y: { stacked: true, grid: { display: false } }
+                },
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+    })();
+</script>
