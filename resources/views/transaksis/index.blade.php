@@ -98,35 +98,6 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	            <p class="text-xs text-gray-500 mt-3">Contoh: tanggal 1 Desember 2025 sampai tanggal 30 Januari 2026.</p>
 	        </div>
 
-	        <!-- Stats Cards -->
-	        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-purple-500">
-                <p class="text-gray-600 text-sm font-medium">Total Transaksi</p>
-                <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">{{ count($transaksis) }}</p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-green-500">
-                <p class="text-gray-600 text-sm font-medium">Total KWH</p>
-                <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
-                    {{ number_format($transaksis->sum('realisasi_kwh'), 0, ',', '.') }}
-                </p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-blue-500">
-                <p class="text-gray-600 text-sm font-medium">Bulan Ini</p>
-                <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
-                    {{ $transaksis->where('tanggal', '>=', now()->startOfMonth())->count() }}
-                </p>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-md p-5 border-l-4 border-orange-500">
-                <p class="text-gray-600 text-sm font-medium">Rata-rata KWH</p>
-                <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
-                    {{ count($transaksis) > 0 ? number_format($transaksis->sum('realisasi_kwh') / count($transaksis), 1, ',', '.') : 0 }}
-                </p>
-            </div>
-        </div>
-
         <!-- Table Card -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
