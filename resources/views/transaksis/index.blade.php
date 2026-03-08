@@ -111,7 +111,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                 <table class="min-w-full text-sm">
                     <thead class="bg-gray-50 border-b-2 border-blue-600">
                         <tr>
-                            <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                            <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">No</th>
                             <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">Tanggal</th>
                             <th class="px-4 py-3 text-left font-semibold text-gray-700 uppercase tracking-wider">Tim</th>
                             <th class="px-4 py-3 text-center font-semibold text-gray-700 uppercase tracking-wider">Realisasi</th>
@@ -121,7 +121,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                     <tbody class="divide-y divide-gray-200">
                         @forelse($transaksis as $transaksi)
                         <tr class="hover:bg-blue-50 transition duration-150">
-                            <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $transaksi->id }}</td>
+                            <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3">
                                 <p class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y') }}</p>
                                 <p class="text-gray-500 text-xs">{{ \Carbon\Carbon::parse($transaksi->tanggal)->diffForHumans() }}</p>

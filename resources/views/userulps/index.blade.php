@@ -88,7 +88,7 @@ if (!session('role') || session('role') !== 'admin') {
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-blue-600">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">No</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama ULP</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Username</th>
                             <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
@@ -99,7 +99,7 @@ if (!session('role') || session('role') !== 'admin') {
                         <tr class="hover:bg-blue-50 transition duration-150">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
-                                    {{ $u->id }}
+                                    {{ $loop->iteration }}
                                 </span>
                             </td>
                             <td class="px-6 py-4">
