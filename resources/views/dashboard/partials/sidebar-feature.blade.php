@@ -78,7 +78,7 @@
 
 <style>
     @media (min-width: 1024px) {
-        #sidebar + div {
+        .feature-content-wrapper {
             margin-left: 16rem !important;
             width: calc(100% - 16rem) !important;
             max-width: none !important;

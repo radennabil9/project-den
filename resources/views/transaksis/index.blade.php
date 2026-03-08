@@ -18,7 +18,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 
 <body class="bg-gradient-to-br from-blue-50 via-white to-sky-50 min-h-screen">
     @include('dashboard.partials.sidebar-feature')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:ml-64">
+    <div class="feature-content-wrapper w-full px-4 lg:px-8 py-6">
         <!-- Header -->
         <div class="mb-8">
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
@@ -167,3 +167,5 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
     </div>
 </body>
 </html>
+
+
