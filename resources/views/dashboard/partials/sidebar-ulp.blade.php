@@ -44,14 +44,14 @@
     </nav>
 
     <!-- User Profile + Logout -->
-    <div class="mt-auto p-4 border-t border-blue-700 relative" @click.away="profileOpen = false">
+    <div class="mt-auto p-3 lg:p-4 border-t border-blue-700 bg-blue-900 relative" @click.away="profileOpen = false">
         <button type="button" @click="profileOpen = !profileOpen"
-            class="w-full flex items-center gap-3 px-4 py-3 bg-blue-900 rounded-lg hover:bg-blue-800 transition">
-            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg">
+            class="w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-blue-800 transition">
+            <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-base lg:text-lg flex-shrink-0">
                 {{ strtoupper(substr(session('username'), 0, 1)) }}
             </div>
-            <div class="flex-1 text-left">
-                <p class="font-semibold text-sm truncate">{{ session('username') }}</p>
+            <div class="flex-1 min-w-0 text-left">
+                <p class="font-semibold text-xs lg:text-sm truncate">{{ session('username') }}</p>
                 <p class="text-blue-300 text-xs uppercase">{{ session('role') }}</p>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-200 transition"
@@ -61,11 +61,11 @@
         </button>
 
         <div x-show="profileOpen" x-transition
-            class="absolute left-4 right-4 bottom-full mb-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden shadow-xl z-50">
+            class="absolute left-3 right-3 lg:left-4 lg:right-4 bottom-full mb-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden shadow-xl z-50">
             <form action="{{ route('logout') }}" method="POST" class="logout-form-ulp">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left px-4 py-3 text-sm font-medium hover:bg-red-600 transition flex items-center gap-2">
+                    class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 transition text-sm font-medium">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M10 3a1 1 0 0 0-1 1v4a1 1 0 1 0 2 0V5h7v14h-7v-3a1 1 0 1 0-2 0v4a1 1 0 0 0 1 1h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8Zm2.29 5.29a1 1 0 0 0 0 1.42L13.59 11H4a1 1 0 1 0 0 2h9.59l-1.3 1.29a1 1 0 1 0 1.42 1.42l3-3a1 1 0 0 0 0-1.42l-3-3a1 1 0 0 0-1.42 0Z" />
                     </svg>
