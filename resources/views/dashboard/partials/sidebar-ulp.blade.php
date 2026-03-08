@@ -1,25 +1,26 @@
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
-    class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-800 to-blue-950 text-white shadow-xl transform transition-transform duration-300 ease-in-out">
+    class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-800 to-blue-950 text-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col">
+
+    <!-- Close Button (Mobile Only) -->
+    <button @click="sidebarOpen = false" class="md:hidden absolute top-4 right-4 text-white hover:text-blue-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
 
     <!-- Logo Section -->
-    <div class="p-6 border-b border-blue-700 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <img src="{{ asset('assets/pln.jpg') }}" alt="Logo PLN" class="w-12 h-12 object-contain bg-white rounded-lg p-1">
+    <div class="p-4 lg:p-6 border-b border-blue-700 flex items-center justify-between">
+        <div class="flex items-center gap-2 lg:gap-3">
+            <img src="{{ asset('assets/pln.jpg') }}" alt="Logo PLN" class="w-10 h-10 lg:w-12 lg:h-12 object-contain bg-white rounded-lg p-1">
             <div>
-                <h2 class="text-lg font-bold">UP3 BOGOR</h2>
+                <h2 class="text-lg lg:text-xl font-bold">UP3 BOGOR</h2>
                 <p class="text-blue-300 text-xs">User Panel</p>
             </div>
         </div>
-        <!-- Tombol close sidebar di mobile -->
-        <button @click="sidebarOpen = false" class="md:hidden text-white focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="p-4 space-y-2">
+    <nav class="p-4 space-y-2 flex-1">
         <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-700 hover:bg-blue-600 transition duration-200 group">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 3a9 9 0 0 0-9 9v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a9 9 0 0 0-9-9Zm0 2a7 7 0 0 1 7 7v1h-2.1a5 5 0 1 0-9.8 0H5v-1a7 7 0 0 1 7-7Zm0 6a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
@@ -43,7 +44,7 @@
     </nav>
 
     <!-- User Profile + Logout -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-blue-700" @click.away="profileOpen = false">
+    <div class="mt-auto p-4 border-t border-blue-700 relative" @click.away="profileOpen = false">
         <button type="button" @click="profileOpen = !profileOpen"
             class="w-full flex items-center gap-3 px-4 py-3 bg-blue-900 rounded-lg hover:bg-blue-800 transition">
             <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-lg">
@@ -60,8 +61,8 @@
         </button>
 
         <div x-show="profileOpen" x-transition
-            class="mt-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden">
-            <form action="{{ route('logout') }}" method="POST">
+            class="absolute left-4 right-4 bottom-full mb-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden shadow-xl z-50">
+            <form action="{{ route('logout') }}" method="POST" class="logout-form-ulp">
                 @csrf
                 <button type="submit"
                     class="w-full text-left px-4 py-3 text-sm font-medium hover:bg-red-600 transition flex items-center gap-2">
@@ -75,7 +76,57 @@
     </div>
 </aside>
 
+<div id="logoutModalUlp" class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-[9999]">
+    <div class="bg-white rounded-xl shadow-lg w-[90%] max-w-sm p-5 text-center">
+        <h3 class="text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
+        <p class="text-sm text-gray-600 mt-2">Apakah Anda yakin ingin logout?</p>
+        <div class="mt-5 flex items-center justify-center gap-2">
+            <button type="button" id="cancelLogoutUlp" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium">Batal</button>
+            <button type="button" id="confirmLogoutUlp" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium">Logout</button>
+        </div>
+    </div>
+</div>
+
 <!-- Overlay (buat mobile sidebar) -->
 <div @click="sidebarOpen = false"
     x-show="sidebarOpen"
     class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"></div>
+
+<script>
+    (function() {
+        const logoutModal = document.getElementById('logoutModalUlp');
+        const cancelLogout = document.getElementById('cancelLogoutUlp');
+        const confirmLogout = document.getElementById('confirmLogoutUlp');
+        const logoutForms = document.querySelectorAll('.logout-form-ulp');
+        let pendingLogoutForm = null;
+        if (!logoutModal || !cancelLogout || !confirmLogout || !logoutForms.length) return;
+
+        const openLogoutModal = () => {
+            logoutModal.classList.remove('hidden');
+            logoutModal.classList.add('flex');
+        };
+        const closeLogoutModal = () => {
+            logoutModal.classList.add('hidden');
+            logoutModal.classList.remove('flex');
+            pendingLogoutForm = null;
+        };
+
+        logoutForms.forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                pendingLogoutForm = form;
+                openLogoutModal();
+            });
+        });
+
+        cancelLogout.addEventListener('click', closeLogoutModal);
+        confirmLogout.addEventListener('click', () => {
+            if (pendingLogoutForm) pendingLogoutForm.submit();
+        });
+        logoutModal.addEventListener('click', (e) => {
+            if (e.target === logoutModal) closeLogoutModal();
+        });
+    })();
+</script>
+
+

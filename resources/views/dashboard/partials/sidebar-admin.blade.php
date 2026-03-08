@@ -1,4 +1,4 @@
-<aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-800 to-blue-950 text-white shadow-xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+<aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-800 to-blue-950 text-white shadow-xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
     <!-- Close Button (Mobile Only) -->
     <button id="closeSidebar" class="lg:hidden absolute top-4 right-4 text-white hover:text-blue-200">
         <i class="bi bi-x-lg text-xl"></i>
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="p-3 lg:p-4 space-y-2">
+    <nav class="p-3 lg:p-4 space-y-2 flex-1">
         <a href="/dashboard" class="flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg bg-blue-700 hover:bg-blue-600 transition duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 3a9 9 0 0 0-9 9v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a9 9 0 0 0-9-9Zm0 2a7 7 0 0 1 7 7v1h-2.1a5 5 0 1 0-9.8 0H5v-1a7 7 0 0 1 7-7Zm0 6a3 3 0 1 1 0 6 3 3 0 0 1 0-6Z" />
@@ -47,7 +47,7 @@
     </nav>
 
     <!-- User Info -->
-    <div class="absolute bottom-0 left-0 right-0 p-3 lg:p-4 border-t border-blue-700 bg-blue-900">
+    <div class="mt-auto p-3 lg:p-4 border-t border-blue-700 bg-blue-900 relative">
         <button type="button" id="profileToggleAdmin"
             class="w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg hover:bg-blue-800 transition">
             <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-base lg:text-lg flex-shrink-0">
@@ -61,8 +61,8 @@
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
             </svg>
         </button>
-        <div id="profileMenuAdmin" class="mt-2 hidden bg-blue-900 rounded-lg border border-blue-700 overflow-hidden">
-            <form action="{{ route('logout') }}" method="POST">
+        <div id="profileMenuAdmin" class="hidden absolute left-3 right-3 lg:left-4 lg:right-4 bottom-full mb-2 bg-blue-900 rounded-lg border border-blue-700 overflow-hidden shadow-xl z-50">
+            <form action="{{ route('logout') }}" method="POST" class="logout-form-admin">
                 @csrf
                 <button type="submit"
                     class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 transition text-sm font-medium">
@@ -76,6 +76,17 @@
     </div>
 </aside>
 
+<div id="logoutModalAdmin" class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-[9999]">
+    <div class="bg-white rounded-xl shadow-lg w-[90%] max-w-sm p-5 text-center">
+        <h3 class="text-lg font-semibold text-gray-800">Konfirmasi Logout</h3>
+        <p class="text-sm text-gray-600 mt-2">Apakah Anda yakin ingin logout?</p>
+        <div class="mt-5 flex items-center justify-center gap-2">
+            <button type="button" id="cancelLogoutAdmin" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium">Batal</button>
+            <button type="button" id="confirmLogoutAdmin" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium">Logout</button>
+        </div>
+    </div>
+</div>
+
 <!-- Overlay for mobile -->
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
 
@@ -83,6 +94,11 @@
     (function() {
         const profileToggle = document.getElementById('profileToggleAdmin');
         const profileMenu = document.getElementById('profileMenuAdmin');
+        const logoutModal = document.getElementById('logoutModalAdmin');
+        const cancelLogout = document.getElementById('cancelLogoutAdmin');
+        const confirmLogout = document.getElementById('confirmLogoutAdmin');
+        const logoutForms = document.querySelectorAll('.logout-form-admin');
+        let pendingLogoutForm = null;
         if (!profileToggle || !profileMenu) return;
 
         profileToggle.addEventListener('click', () => {
@@ -94,5 +110,35 @@
                 profileMenu.classList.add('hidden');
             }
         });
+
+        if (logoutModal && cancelLogout && confirmLogout && logoutForms.length) {
+            const openLogoutModal = () => {
+                logoutModal.classList.remove('hidden');
+                logoutModal.classList.add('flex');
+            };
+            const closeLogoutModal = () => {
+                logoutModal.classList.add('hidden');
+                logoutModal.classList.remove('flex');
+                pendingLogoutForm = null;
+            };
+
+            logoutForms.forEach((form) => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    pendingLogoutForm = form;
+                    openLogoutModal();
+                });
+            });
+
+            cancelLogout.addEventListener('click', closeLogoutModal);
+            confirmLogout.addEventListener('click', () => {
+                if (pendingLogoutForm) pendingLogoutForm.submit();
+            });
+            logoutModal.addEventListener('click', (e) => {
+                if (e.target === logoutModal) closeLogoutModal();
+            });
+        }
     })();
 </script>
+
+

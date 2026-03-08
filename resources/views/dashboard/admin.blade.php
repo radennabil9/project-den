@@ -85,14 +85,14 @@ if (!session('role') || session('role') !== 'admin') {
                             <p class="text-xs sm:text-sm text-gray-600 hidden sm:block">Selamat datang, <span class="font-semibold text-red-700">{{ session('username') }}</span></p>
                         </div>
                     </div>
-                    <!-- Tombol logout -->
+                    <!-- Tombol logout
                     <button type="button" onclick="openLogoutModal()"
                         class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition duration-200 text-sm lg:text-base shadow-sm">
                         <i class="bi bi-box-arrow-right text-lg"></i>
                         <span class="hidden sm:inline">Logout</span>
-                    </button>
+                    </button> -->
 
-                    <!-- Modal Konfirmasi Logout -->
+                    <!-- Modal Konfirmasi Logout
                     <div id="logoutModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm items-center justify-center z-[9999]">
                         <div class="modal-content bg-white rounded-xl shadow-lg w-80 p-6 text-center transform transition-all duration-200 scale-95 opacity-0">
                             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
@@ -116,7 +116,7 @@ if (!session('role') || session('role') !== 'admin') {
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </header>
 
