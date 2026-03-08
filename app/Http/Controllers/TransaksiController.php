@@ -17,9 +17,29 @@ class TransaksiController extends Controller
         $tanggalSampai = $request->query('tanggal_sampai');
         $this->applyDateRangeFilter($query, $tanggalDari, $tanggalSampai);
 
-        $transaksis = $query->orderByDesc('tanggal')->get();
+        $allowedPerPage = [25, 50, 100];
+        $perPage = (int) $request->query('per_page', 25);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 25;
+        }
 
-        return view('transaksis.index', compact('transaksis', 'tanggalDari', 'tanggalSampai'));
+        $totalTransaksi = (clone $query)->count();
+        $totalKwh = (clone $query)->sum('realisasi_kwh');
+        $bulanIni = (clone $query)->where('tanggal', '>=', now()->startOfMonth())->count();
+        $rataRataKwh = $totalTransaksi > 0 ? ($totalKwh / $totalTransaksi) : 0;
+
+        $transaksis = $query->orderByDesc('tanggal')->paginate($perPage)->withQueryString();
+
+        return view('transaksis.index', compact(
+            'transaksis',
+            'tanggalDari',
+            'tanggalSampai',
+            'perPage',
+            'totalTransaksi',
+            'totalKwh',
+            'bulanIni',
+            'rataRataKwh'
+        ));
     }
 
     public function filter(Request $request)
@@ -27,6 +47,7 @@ class TransaksiController extends Controller
         return redirect()->route('transaksis.index', [
             'tanggal_dari' => $request->query('tanggal_dari'),
             'tanggal_sampai' => $request->query('tanggal_sampai'),
+            'per_page' => $request->query('per_page', 25),
         ]);
     }
 

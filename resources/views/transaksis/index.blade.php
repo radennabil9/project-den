@@ -67,7 +67,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	        <!-- Filter Rentang Tanggal -->
 	        <div class="mb-8 bg-white rounded-xl shadow-md p-5 border border-gray-200">
 	            <div class="flex flex-col xl:flex-row xl:items-end gap-4">
-	                <form method="GET" action="{{ route('transaksis.index') }}" class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 items-end">
+	                <form method="GET" action="{{ route('transaksis.index') }}" class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 items-end">
 	                    <div>
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Dari</label>
 	                        <input type="date" name="tanggal_dari" value="{{ $tanggalDari ?? request('tanggal_dari') }}"
@@ -77,6 +77,15 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tanggal Sampai</label>
 	                        <input type="date" name="tanggal_sampai" value="{{ $tanggalSampai ?? request('tanggal_sampai') }}"
 	                            class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+	                    </div>
+	                    <div>
+	                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Tampilkan Data</label>
+	                        <select name="per_page"
+	                            class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-[44px]">
+	                            <option value="25" {{ (int) ($perPage ?? request('per_page', 25)) === 25 ? 'selected' : '' }}>25 data</option>
+	                            <option value="50" {{ (int) ($perPage ?? request('per_page', 25)) === 50 ? 'selected' : '' }}>50 data</option>
+	                            <option value="100" {{ (int) ($perPage ?? request('per_page', 25)) === 100 ? 'selected' : '' }}>100 data</option>
+	                        </select>
 	                    </div>
 	                    <button type="submit"
 	                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm h-[44px]">
@@ -89,7 +98,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
 	                </form>
 
 	                @if (session('role') === 'admin')
-	                <a href="{{ route('transaksis.export', ['tanggal_dari' => $tanggalDari ?? request('tanggal_dari'), 'tanggal_sampai' => $tanggalSampai ?? request('tanggal_sampai')]) }}"
+	                <a href="{{ route('transaksis.export', ['tanggal_dari' => $tanggalDari ?? request('tanggal_dari'), 'tanggal_sampai' => $tanggalSampai ?? request('tanggal_sampai'), 'per_page' => $perPage ?? request('per_page', 25)]) }}"
 	                    class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-4 py-2.5 text-sm font-semibold shadow-sm whitespace-nowrap h-[44px]">
 	                    Export Excel
 	                </a>
@@ -103,7 +112,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <h2 class="text-lg sm:text-xl font-semibold text-white">Data Transaksi Realisasi</h2>
                 <span class="bg-white/20 text-white text-xs sm:text-sm px-3 py-1 rounded-full">
-                    {{ count($transaksis) }} Transaksi
+                    {{ number_format($transaksis->total(), 0, ',', '.') }} Transaksi
                 </span>
             </div>
 
@@ -121,7 +130,7 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                     <tbody class="divide-y divide-gray-200">
                         @forelse($transaksis as $transaksi)
                         <tr class="hover:bg-blue-50 transition duration-150">
-                            <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-3 text-gray-800 font-semibold text-center">{{ $transaksis->firstItem() + $loop->index }}</td>
                             <td class="px-4 py-3">
                                 <p class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d M Y') }}</p>
                                 <p class="text-gray-500 text-xs">{{ \Carbon\Carbon::parse($transaksi->tanggal)->diffForHumans() }}</p>
@@ -154,8 +163,43 @@ if (!session('role') || (session('role') !== 'admin' && session('role') !== 'ulp
                 </table>
             </div>
 
+            @if ($transaksis->hasPages())
+            <div class="px-6 py-4 border-t border-gray-200 bg-white">
+                <div class="flex items-center justify-center gap-2 flex-wrap">
+                    @if ($transaksis->onFirstPage())
+                    <span class="px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-300 cursor-not-allowed">Sebelumnya</span>
+                    @else
+                    <a href="{{ $transaksis->previousPageUrl() }}"
+                        class="px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition">
+                        Sebelumnya
+                    </a>
+                    @endif
+
+                    @for ($page = 1; $page <= $transaksis->lastPage(); $page++)
+                        @if ($page == $transaksis->currentPage())
+                        <span class="min-w-[40px] text-center px-3 py-2 rounded-lg text-sm font-semibold bg-blue-800 text-white">{{ $page }}</span>
+                        @else
+                        <a href="{{ $transaksis->url($page) }}"
+                            class="min-w-[40px] text-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 hover:bg-blue-200 text-blue-700 transition">
+                            {{ $page }}
+                        </a>
+                        @endif
+                    @endfor
+
+                    @if ($transaksis->hasMorePages())
+                    <a href="{{ $transaksis->nextPageUrl() }}"
+                        class="px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white transition">
+                        Berikutnya
+                    </a>
+                    @else
+                    <span class="px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-300 cursor-not-allowed">Berikutnya</span>
+                    @endif
+                </div>
+            </div>
+            @endif
+
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-center sm:text-left text-sm text-gray-600">
-                © PT PLN (Persero) UP3 BOGOR - Data Realisasi KWH
+                &copy; PT PLN (Persero) UP3 BOGOR - Data Realisasi KWH
             </div>
         </div>
 
