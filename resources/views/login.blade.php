@@ -63,13 +63,13 @@
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-2xl shadow-lg mb-4 float-animation border border-blue-100">
           <img src="{{ asset('assets/pln.jpg') }}" alt="Logo PLN" class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 tracking-wide text-center">Sistem Login</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 tracking-wide text-center">Pemantauan Aktifitas P2TL</h1>
         <div class="flex items-center gap-2 mt-2">
           <div class="w-8 h-0.5 bg-blue-600"></div>
           <p class="text-gray-700 font-semibold text-sm sm:text-base">PLN UP3 BOGOR</p>
           <div class="w-8 h-0.5 bg-blue-600"></div>
         </div>
-        <p class="text-gray-500 text-xs sm:text-sm mt-2">PT PLN (Persero)</p>
+        <p class="text-gray-500 text-xs sm:text-sm mt-2">PT PLN (Persero) UP3 Bogor</p>
       </div>
 
       <!-- Error Message -->
@@ -121,7 +121,7 @@
         <button type="submit"
           class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 mt-6">
           <i class="bi bi-box-arrow-in-right text-lg"></i>
-          Masuk ke Sistem
+          Login
         </button>
       </form>
 
